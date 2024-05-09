@@ -104,7 +104,7 @@ tasks.withType(JavaCompile).configureEach {
 
 publishMods {
     file = jar.archiveFile
-    changelog = "First beta build"
+    changelog = "Added resources"
     type = BETA
     modLoaders.add("forge")
 
