@@ -1,6 +1,5 @@
 package io.github.hashibutogarasu.mla.mixin;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.LoadingOverlay;
 import org.spongepowered.asm.mixin.Mixin;
