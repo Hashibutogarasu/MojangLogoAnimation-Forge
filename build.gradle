@@ -112,8 +112,9 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 publishMods {
+    displayName = "${project.mod_name}-Forge-${project.version}"
     file = jar.archiveFile
-    changelog = "Added resources"
+    changelog = "Changed LoadingOverlay LOGO rendering"
     type = BETA
     modLoaders.add("forge")
 
