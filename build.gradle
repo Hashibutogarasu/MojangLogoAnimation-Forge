@@ -15,7 +15,7 @@ group = mod_group_id
 version = gitVersion()
 
 base {
-    archivesName = archive_base_name + "-" + "Forge"
+    archivesName = archive_base_name + "-" + "Forge" + "-" + project.mapping_version
 }
 
 java {
@@ -114,7 +114,7 @@ tasks.withType(JavaCompile).configureEach {
 publishMods {
     displayName = "${project.mod_name}-Forge-${project.mapping_version}-${project.version}"
     file = jar.archiveFile
-    changelog = "Changed displayname"
+    changelog = "Changed archivesName"
     type = BETA
     modLoaders.add("forge")
 
