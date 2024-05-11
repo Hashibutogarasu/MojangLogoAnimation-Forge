@@ -1,6 +1,8 @@
 package io.github.hashibutogarasu.mla.mixin;
 
+import io.github.hashibutogarasu.mla.config.ModConfig;
 import io.github.hashibutogarasu.mla.sound.ModSounds;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.LoadingOverlay;
@@ -38,8 +40,12 @@ public class LoadingOverlayMixin {
     @Unique
     private boolean mojangLogoAnimation_Forge$reloading = true;
 
+    @Unique
+    private ModConfig mojangLogoAnimation_Forge$config;
+
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void init(Minecraft p_96172_, ReloadInstance p_96173_, Consumer<Optional<Throwable>> p_96174_, boolean p_96175_, CallbackInfo ci) {
+        mojangLogoAnimation_Forge$config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         if(!mojangLogoAnimation_Forge$firstLoad){
             this.mojangLogoAnimation_Forge$animProgress = 38;
             mojangLogoAnimation_Forge$reloading = false;
@@ -62,7 +68,11 @@ public class LoadingOverlayMixin {
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIFFIIII)V", ordinal = 0))
     private void blit0(GuiGraphics instance, ResourceLocation p_282034_, int p_283671_, int p_282377_, int p_282058_, int p_281939_, float p_282285_, float p_283199_, int p_282186_, int p_282322_, int p_282481_, int p_281887_) {
-        instance.blit(getMojang(mojangLogoAnimation_Forge$animProgress), (instance.guiWidth() / 2) - 120, p_282377_, p_282058_, -0.0625F, 0.0F, 240, 60, 240, 60);
+        double d = Math.min((double)instance.guiWidth() * 0.75, instance.guiHeight()) * 0.25;
+        double e = d * 4.0;
+        int r = (int)(e);
+
+        instance.blit(mojangLogoAnimation_Forge$config.mode == ModConfig.Mode.MOJANG ? getMojang(mojangLogoAnimation_Forge$animProgress) : getAprilfool(mojangLogoAnimation_Forge$animProgress), (instance.guiWidth() / 2) - (r / 2), p_282377_, p_282058_, -0.0625F, 0.0F, r, (int) d, r, (int) d);
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIFFIIII)V", ordinal = 1))
@@ -105,7 +115,7 @@ public class LoadingOverlayMixin {
     private @NotNull Thread getAnimationThread() {
         var animthread = new Thread(()->{
             this.mojangLogoAnimation_Forge$animProgress = 0;
-            ModSounds.play(Minecraft.getInstance().getSoundManager(), ModSounds.MOJANG_SOUND);
+            ModSounds.play(Minecraft.getInstance().getSoundManager(), ModSounds.getSoundByConfig());
             for(int i = 0; i < 38; i++){
                 mojangLogoAnimation_Forge$animProgress++;
                 try {
