@@ -1,6 +1,8 @@
 package io.github.hashibutogarasu.mla.screen;
 
 import io.github.hashibutogarasu.mla.config.ConfigImpl;
+import io.github.hashibutogarasu.mla.config.ModConfig;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -33,7 +35,7 @@ public class ConfigScreen extends Screen implements ConfigImpl {
 
     @Override
     public void save(Button button) {
-
+        AutoConfig.getConfigHolder(ModConfig.class).save();
         this.onClose();
     }
 
