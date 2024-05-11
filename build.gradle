@@ -1,3 +1,5 @@
+import com.google.common.base.Utf8
+
 plugins {
     id 'eclipse'
     id 'idea'
@@ -124,7 +126,7 @@ tasks.withType(JavaCompile).configureEach {
 publishMods {
     displayName = "${project.mod_name}-Forge-${project.mapping_version}-${project.version}"
     file = jar.archiveFile
-    changelog = "Changed archivesName"
+    changelog = file("changelog.txt").getText("UTF-8")
     type = BETA
     modLoaders.add("forge")
 

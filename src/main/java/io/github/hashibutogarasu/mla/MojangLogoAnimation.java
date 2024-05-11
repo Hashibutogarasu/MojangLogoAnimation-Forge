@@ -2,8 +2,11 @@ package io.github.hashibutogarasu.mla;
 
 import com.mojang.logging.LogUtils;
 import io.github.hashibutogarasu.mla.config.ModConfig;
+import io.github.hashibutogarasu.mla.screen.ModConfigScreen;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
+import net.minecraft.sounds.Music;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -23,15 +26,29 @@ public class MojangLogoAnimation {
     public static final String MODID = "mla";
     private static final Logger LOGGER = LogUtils.getLogger();
 
+    public static boolean firstLoad = true;
+    public static boolean isLoading = true;
+    public static Music currentmusic;
+
     public MojangLogoAnimation() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
-        ModLoadingContext.get().registerConfig(COMMON, Config.SPEC);
+//        ModLoadingContext.get().registerConfig(COMMON, Config.pair.getRight());
+        modEventBus.addListener(this::onFMLClientSetupEvent);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
     }
+
+    @SubscribeEvent
+    public void onFMLClientSetupEvent(FMLClientSetupEvent event) {
+        ModLoadingContext.get().registerExtensionPoint(
+                ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory((client, parent) -> new ModConfigScreen(parent))
+        );
+    }
+
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {

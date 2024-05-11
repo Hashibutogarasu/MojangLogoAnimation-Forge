@@ -1,6 +1,8 @@
 package io.github.hashibutogarasu.mla.mixin;
 
+import io.github.hashibutogarasu.mla.MojangLogoAnimation;
 import io.github.hashibutogarasu.mla.config.ModConfig;
+import io.github.hashibutogarasu.mla.config.Mode;
 import io.github.hashibutogarasu.mla.sound.ModSounds;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
@@ -8,6 +10,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.gui.screens.Overlay;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ReloadInstance;
 import org.jetbrains.annotations.NotNull;
@@ -26,9 +30,6 @@ import java.util.function.Consumer;
 
 @Mixin(LoadingOverlay.class)
 public class LoadingOverlayMixin {
-    @Unique
-    private static boolean mojangLogoAnimation_Forge$firstLoad = true;
-
     @Shadow @Final private ReloadInstance reload;
 
     @Shadow @Final private Minecraft minecraft;
@@ -46,12 +47,12 @@ public class LoadingOverlayMixin {
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void init(Minecraft p_96172_, ReloadInstance p_96173_, Consumer<Optional<Throwable>> p_96174_, boolean p_96175_, CallbackInfo ci) {
         mojangLogoAnimation_Forge$config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-        if(!mojangLogoAnimation_Forge$firstLoad){
+        if(!MojangLogoAnimation.firstLoad){
             this.mojangLogoAnimation_Forge$animProgress = 38;
             mojangLogoAnimation_Forge$reloading = false;
         }
         this.reload.done().thenAccept(o -> {
-            if(mojangLogoAnimation_Forge$firstLoad){
+            if(MojangLogoAnimation.firstLoad){
                 var thread = getAnimationThread();
                 thread.start();
             }
@@ -72,7 +73,7 @@ public class LoadingOverlayMixin {
         double e = d * 4.0;
         int r = (int)(e);
 
-        instance.blit(mojangLogoAnimation_Forge$config.mode == ModConfig.Mode.MOJANG ? getMojang(mojangLogoAnimation_Forge$animProgress) : getAprilfool(mojangLogoAnimation_Forge$animProgress), (instance.guiWidth() / 2) - (r / 2), p_282377_, p_282058_, -0.0625F, 0.0F, r, (int) d, r, (int) d);
+        instance.blit(mojangLogoAnimation_Forge$config.mode == Mode.MOJANG ? getMojang(mojangLogoAnimation_Forge$animProgress) : getAprilfool(mojangLogoAnimation_Forge$animProgress), (instance.guiWidth() / 2) - (r / 2), p_282377_, p_282058_, -0.0625F, 0.0F, r, (int) d, r, (int) d);
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIFFIIII)V", ordinal = 1))
@@ -103,12 +104,12 @@ public class LoadingOverlayMixin {
 
     @Unique
     private ResourceLocation getMojang(int index){
-        return mojangLogoAnimation_Forge$firstLoad ? new ResourceLocation("mla", "textures/gui/title/mojang/mojang" + index + ".png") : new ResourceLocation("mla", "textures/gui/title/mojang/mojang38.png");
+        return MojangLogoAnimation.firstLoad ? new ResourceLocation("mla", "textures/gui/title/mojang/mojang" + index + ".png") : new ResourceLocation("mla", "textures/gui/title/mojang/mojang38.png");
     }
 
     @Unique
     private ResourceLocation getAprilfool(int index){
-        return mojangLogoAnimation_Forge$firstLoad ? new ResourceLocation("mla", "textures/gui/title/mojang_april_fool/mojang" + index + ".png") : new ResourceLocation("mla", "textures/gui/title/mojang/mojang38.png");
+        return MojangLogoAnimation.firstLoad ? new ResourceLocation("mla", "textures/gui/title/mojang_april_fool/mojang" + index + ".png") : new ResourceLocation("mla", "textures/gui/title/mojang/mojang38.png");
     }
 
     @Unique
@@ -129,8 +130,14 @@ public class LoadingOverlayMixin {
             } catch (InterruptedException ignored) {
 
             }
+
+            if(MojangLogoAnimation.currentmusic != null && MojangLogoAnimation.firstLoad){
+                minecraft.getMusicManager().startPlaying(MojangLogoAnimation.currentmusic);
+            }
+
+            MojangLogoAnimation.isLoading = false;
             mojangLogoAnimation_Forge$reloading = false;
-            mojangLogoAnimation_Forge$firstLoad = false;
+            MojangLogoAnimation.firstLoad = false;
         });
 
         animthread.setName("animthread");
