@@ -12,11 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MusicManager.class)
 public class MusicManagerMixin {
-    @Inject(method = "startPlaying", at = @At(value = "HEAD"))
+    @Inject(method = "startPlaying", at = @At(value = "HEAD"), cancellable = true)
     private void startPlaying(Music p_120185_, CallbackInfo ci) {
         if(MojangLogoAnimation.isLoading && ModSounds.playingInstance != null && MojangLogoAnimation.firstLoad){
             Minecraft.getInstance().getMusicManager().stopPlaying();
             MojangLogoAnimation.currentmusic = p_120185_;
+            ci.cancel();
         }
     }
 }
