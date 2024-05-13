@@ -1,19 +1,14 @@
 package io.github.hashibutogarasu.mla.screen;
 
 import io.github.hashibutogarasu.mla.MojangLogoAnimation;
-import io.github.hashibutogarasu.mla.config.ConfigImpl;
-import io.github.hashibutogarasu.mla.config.ModConfig;
 import io.github.hashibutogarasu.mla.config.Mode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 public class ModConfigScreen extends ConfigScreen {
     private final Minecraft minecraft;
