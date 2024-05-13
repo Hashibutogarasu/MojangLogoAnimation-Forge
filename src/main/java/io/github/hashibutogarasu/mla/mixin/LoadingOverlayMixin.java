@@ -48,15 +48,12 @@ public class LoadingOverlayMixin {
             this.mojangLogoAnimation_Forge$animProgress = this.mojangLogoAnimation_Forge$config.mode.getMax();
             this.mojangLogoAnimation_Forge$reloading = false;
         }
-        this.reload.done().thenAccept(o -> {
-            if(MojangLogoAnimation.firstLoad){
+        else{
+            this.reload.done().thenAccept(o -> {
                 var thread = mojangLogoAnimation_Forge$getAnimationThread();
                 thread.start();
-            }
-            else{
-                this.mojangLogoAnimation_Forge$reloading = false;
-            }
-        });
+            });
+        }
     }
 
     @Inject(method = "render", at = @At(value = "HEAD"))
