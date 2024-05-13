@@ -2,7 +2,6 @@ package io.github.hashibutogarasu.mla.mixin;
 
 import io.github.hashibutogarasu.mla.MojangLogoAnimation;
 import io.github.hashibutogarasu.mla.config.ModConfig;
-import io.github.hashibutogarasu.mla.config.Mode;
 import io.github.hashibutogarasu.mla.sound.ModSounds;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
@@ -51,7 +50,7 @@ public class LoadingOverlayMixin {
         }
         this.reload.done().thenAccept(o -> {
             if(MojangLogoAnimation.firstLoad){
-                var thread = getAnimationThread();
+                var thread = mojangLogoAnimation_Forge$getAnimationThread();
                 thread.start();
             }
             else{
@@ -101,7 +100,7 @@ public class LoadingOverlayMixin {
     }
 
     @Unique
-    private @NotNull Thread getAnimationThread() {
+    private @NotNull Thread mojangLogoAnimation_Forge$getAnimationThread() {
         var animthread = new Thread(()->{
             this.mojangLogoAnimation_Forge$animProgress = 0;
             ModSounds.play(Minecraft.getInstance().getSoundManager(), mojangLogoAnimation_Forge$config.mode.getSound());
