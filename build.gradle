@@ -1,4 +1,3 @@
-import com.google.common.base.Utf8
 import me.modmuss50.mpp.ReleaseType
 
 plugins {

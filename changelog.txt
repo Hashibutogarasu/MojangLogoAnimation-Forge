@@ -1,1 +1,1 @@
-Set releasetype to STABLE
+Deleted unused import
