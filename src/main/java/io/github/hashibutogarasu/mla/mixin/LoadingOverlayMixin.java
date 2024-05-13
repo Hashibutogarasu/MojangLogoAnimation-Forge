@@ -46,8 +46,8 @@ public class LoadingOverlayMixin {
     private void init(Minecraft p_96172_, ReloadInstance p_96173_, Consumer<Optional<Throwable>> p_96174_, boolean p_96175_, CallbackInfo ci) {
         mojangLogoAnimation_Forge$config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         if(!MojangLogoAnimation.firstLoad){
-            this.mojangLogoAnimation_Forge$animProgress = 38;
-            mojangLogoAnimation_Forge$reloading = false;
+            this.mojangLogoAnimation_Forge$animProgress = this.mojangLogoAnimation_Forge$config.mode.getMax();
+            this.mojangLogoAnimation_Forge$reloading = false;
         }
         this.reload.done().thenAccept(o -> {
             if(MojangLogoAnimation.firstLoad){
@@ -55,7 +55,7 @@ public class LoadingOverlayMixin {
                 thread.start();
             }
             else{
-                mojangLogoAnimation_Forge$reloading = false;
+                this.mojangLogoAnimation_Forge$reloading = false;
             }
         });
     }
@@ -71,7 +71,7 @@ public class LoadingOverlayMixin {
         double e = d * 4.0;
         int r = (int)(e);
 
-        instance.blit(mojangLogoAnimation_Forge$config.mode == Mode.MOJANG ? getMojang(mojangLogoAnimation_Forge$animProgress) : getAprilfool(mojangLogoAnimation_Forge$animProgress), (instance.guiWidth() / 2) - (r / 2), p_282377_, p_282058_, -0.0625F, 0.0F, r, (int) d, r, (int) d);
+        instance.blit(MojangLogoAnimation.firstLoad ? this.mojangLogoAnimation_Forge$config.mode.getResourcelocation(this.mojangLogoAnimation_Forge$animProgress) : this.mojangLogoAnimation_Forge$config.mode.getResourcelocation(mojangLogoAnimation_Forge$config.mode.getMax()), (instance.guiWidth() / 2) - (r / 2), p_282377_, p_282058_, -0.0625F, 0.0F, r, (int) d, r, (int) d);
     }
 
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIFFIIII)V", ordinal = 1))
@@ -101,20 +101,10 @@ public class LoadingOverlayMixin {
     }
 
     @Unique
-    private ResourceLocation getMojang(int index){
-        return MojangLogoAnimation.firstLoad ? new ResourceLocation("mla", "textures/gui/title/mojang/mojang" + index + ".png") : new ResourceLocation("mla", "textures/gui/title/mojang/mojang38.png");
-    }
-
-    @Unique
-    private ResourceLocation getAprilfool(int index){
-        return MojangLogoAnimation.firstLoad ? new ResourceLocation("mla", "textures/gui/title/mojang_april_fool/mojang" + index + ".png") : new ResourceLocation("mla", "textures/gui/title/mojang/mojang38.png");
-    }
-
-    @Unique
     private @NotNull Thread getAnimationThread() {
         var animthread = new Thread(()->{
             this.mojangLogoAnimation_Forge$animProgress = 0;
-            ModSounds.play(Minecraft.getInstance().getSoundManager(), ModSounds.getSoundByConfig());
+            ModSounds.play(Minecraft.getInstance().getSoundManager(), mojangLogoAnimation_Forge$config.mode.getSound());
             for(int i = 0; i < 38; i++){
                 mojangLogoAnimation_Forge$animProgress++;
                 try {
