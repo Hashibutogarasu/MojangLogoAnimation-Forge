@@ -6,7 +6,6 @@ import io.github.hashibutogarasu.mla.screen.ModConfigScreen;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.minecraft.sounds.Music;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -18,8 +17,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
-
-import static net.minecraftforge.fml.config.ModConfig.Type.COMMON;
 
 @Mod(MojangLogoAnimation.MODID)
 public class MojangLogoAnimation {
@@ -33,7 +30,6 @@ public class MojangLogoAnimation {
     public MojangLogoAnimation() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::commonSetup);
-//        ModLoadingContext.get().registerConfig(COMMON, Config.pair.getRight());
         modEventBus.addListener(this::onFMLClientSetupEvent);
     }
 

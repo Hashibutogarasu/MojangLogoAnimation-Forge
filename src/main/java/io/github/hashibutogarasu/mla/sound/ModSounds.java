@@ -9,9 +9,11 @@ import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
+import static io.github.hashibutogarasu.mla.MojangLogoAnimation.MODID;
+
 public class ModSounds {
-    public static ResourceLocation MOJANG_SOUND = new ResourceLocation("mla", "mojang_sound");
-    public static ResourceLocation APRILFOOL_SOUND = new ResourceLocation("mla", "mojang_april_fool_sound");
+    public static ResourceLocation MOJANG_SOUND = new ResourceLocation(MODID, "mojang_sound");
+    public static ResourceLocation APRILFOOL_SOUND = new ResourceLocation(MODID, "mojang_april_fool_sound");
 
     public static SoundInstance playingInstance;
 

@@ -6,7 +6,7 @@ public enum Mode {
     MOJANG(Component.translatable("mla.mode.mojang")),
     APRIL_FOOL(Component.translatable("mla.mode.april_fool"));
 
-    private Component component;
+    private final Component component;
 
     Mode(Component component){
         this.component = component;

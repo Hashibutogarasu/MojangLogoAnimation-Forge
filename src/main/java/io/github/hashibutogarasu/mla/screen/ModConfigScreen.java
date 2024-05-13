@@ -2,6 +2,7 @@ package io.github.hashibutogarasu.mla.screen;
 
 import io.github.hashibutogarasu.mla.MojangLogoAnimation;
 import io.github.hashibutogarasu.mla.config.ConfigImpl;
+import io.github.hashibutogarasu.mla.config.ModConfig;
 import io.github.hashibutogarasu.mla.config.Mode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
