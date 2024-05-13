@@ -1,1 +1,1 @@
-Changed method name
+Set releasetype to STABLE

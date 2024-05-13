@@ -1,4 +1,5 @@
 import com.google.common.base.Utf8
+import me.modmuss50.mpp.ReleaseType
 
 plugins {
     id 'eclipse'
@@ -127,7 +128,7 @@ publishMods {
     displayName = "${project.mod_name}-Forge-${project.mapping_version}-${project.version}"
     file = jar.archiveFile
     changelog = file("changelog.txt").getText("UTF-8")
-    type = BETA
+    type = ReleaseType.STABLE
     modLoaders.add("forge")
 
     curseforge {
