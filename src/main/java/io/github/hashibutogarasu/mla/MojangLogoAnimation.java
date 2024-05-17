@@ -24,7 +24,6 @@ public class MojangLogoAnimation {
     public static boolean firstLoad = true;
     public static boolean isLoading = true;
     public static Music currentmusic;
-    public static ProgressMeter currentProgress;
 
     public MojangLogoAnimation() {
         AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);
