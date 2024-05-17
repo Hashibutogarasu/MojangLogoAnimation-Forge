@@ -9,6 +9,10 @@ import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
+import javax.annotation.Nullable;
+
+import java.util.ConcurrentModificationException;
+
 import static io.github.hashibutogarasu.mla.MojangLogoAnimation.MODID;
 
 public class ModSounds {
@@ -22,6 +26,7 @@ public class ModSounds {
         return config.mode == Mode.MOJANG ? MOJANG_SOUND : APRILFOOL_SOUND;
     }
 
+    @Nullable
     public static SimpleSoundInstance getSoundInstance(ResourceLocation location){
         SoundEvent event = SoundEvent.createVariableRangeEvent(location);
         return SimpleSoundInstance.forUI(event,  1.0F);
@@ -29,6 +34,14 @@ public class ModSounds {
 
     public static void play(SoundManager soundManager, ResourceLocation location){
         ModSounds.playingInstance = getSoundInstance(location);
-        soundManager.play(getSoundInstance(location));
+        var instance = getSoundInstance(location);
+        if(instance != null){
+            try{
+                soundManager.play(instance);
+            }
+            catch (ConcurrentModificationException ignored){
+
+            }
+        }
     }
 }

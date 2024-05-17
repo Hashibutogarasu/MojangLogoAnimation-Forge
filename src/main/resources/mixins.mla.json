@@ -3,6 +3,7 @@
   "package": "io.github.hashibutogarasu.mla.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "ForgeLoadingOverlayMixin",
     "LoadingOverlayMixin",
     "MusicManagerMixin"
   ],
