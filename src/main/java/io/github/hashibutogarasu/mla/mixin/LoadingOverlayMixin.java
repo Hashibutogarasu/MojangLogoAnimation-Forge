@@ -37,7 +37,6 @@ public abstract class LoadingOverlayMixin extends Overlay {
 
     @Redirect(remap = false, method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/earlydisplay/DisplayWindow;render(I)V"))
     private void render(DisplayWindow instance, int alpha) {
-//        displayWindow.render(alpha);
         MojangLogoAnimation.currentProgress = progress;
     }
 
