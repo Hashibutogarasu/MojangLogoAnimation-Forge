@@ -9,5 +9,6 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "refmap": "mixins.mla.refmap.json"
+  "refmap": "mixins.mla.refmap.json",
+  "minVersion": "0.8.5"
 }

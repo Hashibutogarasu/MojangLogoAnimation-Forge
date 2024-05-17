@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mixin(ForgeLoadingOverlay.class)
-public abstract class ForgeLoadingOverlayMixin extends Overlay {
+public class ForgeLoadingOverlayMixin {
     @Inject(method = "<init>", at = @At(value = "RETURN"))
     private void init(Minecraft mc, ReloadInstance reloader, Consumer<Optional<Throwable>> errorConsumer, DisplayWindow displayWindow, CallbackInfo ci) {
 
