@@ -26,7 +26,7 @@ public abstract class ForgeLoadingOverlayMixin extends Overlay {
 
     @Inject(remap = false, method = "lambda$newInstance$0", at = @At(value = "NEW", target = "(Lnet/minecraft/client/Minecraft;Lnet/minecraft/server/packs/resources/ReloadInstance;Ljava/util/function/Consumer;Lnet/minecraftforge/fml/earlydisplay/DisplayWindow;)Lnet/minecraftforge/client/loading/ForgeLoadingOverlay;"), cancellable = true)
     private static void newInstance(Supplier<Minecraft> mc, Supplier<ReloadInstance> ri, Consumer<Optional<Throwable>> handler, DisplayWindow window, CallbackInfoReturnable<LoadingOverlay> cir) {
-        var overlay = new CustomLoadingOverlay(mc.get(), ri.get(), handler, false);
+        var overlay = new CustomLoadingOverlay(mc.get(), ri.get(), handler, true);
         cir.setReturnValue(overlay);
     }
 }
